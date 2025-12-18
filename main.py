@@ -1,18 +1,15 @@
 # main.py
 import streamlit as st
-from src.utils.get_data import load_raw_data
-from src.utils.clean_data import clean_tourism_data
+from src.utils.load_cleaned_data import load_cleaned_data  # notre fonction corrigée
 
 # -----------------------------
-# Chargement des données
+# Chargement des données nettoyées
 # -----------------------------
 @st.cache_data
 def load_data():
-    df_raw = load_raw_data()
-    df_clean = clean_tourism_data(df_raw)
-    return df_clean
+    return load_cleaned_data()
 
-df = load_data()
+df_dict = load_data()  # df_dict contient les 3 fichiers nettoyés
 
 # -----------------------------
 # Navigation multi-pages
@@ -22,13 +19,13 @@ page = st.sidebar.radio("Aller à :", ["Accueil", "Régions", "International", "
 
 if page == "Accueil":
     from src.pages.home import show_home
-    show_home(df)
+    show_home(df_dict)
 elif page == "Régions":
     from src.pages.regional import show_regional
-    show_regional(df)
+    show_regional(df_dict)
 elif page == "International":
     from src.pages.international import show_international
-    show_international(df)
+    show_international(df_dict)
 elif page == "Économie":
     from src.pages.economic import show_economic
-    show_economic(df)
+    show_economic(df_dict)
